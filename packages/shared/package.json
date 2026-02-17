@@ -1,0 +1,16 @@
+{
+  "name": "@sorgelotse/shared",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./rpc-types": "./src/rpc-types.ts",
+    "./eden-helpers": "./src/eden-helpers.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.7"
+  }
+}

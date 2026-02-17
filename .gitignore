@@ -1,0 +1,9 @@
+node_modules
+dist
+.turbo
+.env
+.env.local
+.DONOTCOMMIT
+*.tsbuildinfo
+.astro
+.DS_Store

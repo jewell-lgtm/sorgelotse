@@ -1,0 +1,27 @@
+{
+  "name": "@sorgelotse/care-provider",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --port 4322",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/node": "^9",
+    "@astrojs/react": "^4",
+    "@elysiajs/eden": "^1.4",
+    "@sorgelotse/shared": "workspace:*",
+    "astro": "^5",
+    "react": "^19",
+    "react-dom": "^19"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@sorgelotse/api": "workspace:*",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5.7"
+  }
+}

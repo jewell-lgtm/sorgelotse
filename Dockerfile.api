@@ -1,0 +1,31 @@
+FROM oven/bun:1 AS base
+WORKDIR /app
+
+# Install deps
+COPY package.json bun.lock* bunfig.toml ./
+COPY apps/api/package.json apps/api/
+COPY packages/shared/package.json packages/shared/
+RUN bun install --frozen-lockfile || bun install
+
+# Copy source
+COPY packages/shared packages/shared
+COPY apps/api apps/api
+COPY tsconfig.json ./
+
+# Build
+RUN cd apps/api && bun run build
+
+# Runtime
+FROM oven/bun:1-slim
+WORKDIR /app
+
+COPY --from=base /app/node_modules node_modules
+COPY --from=base /app/apps/api/node_modules apps/api/node_modules
+COPY --from=base /app/apps/api/dist apps/api/dist
+COPY --from=base /app/apps/api/drizzle apps/api/drizzle
+COPY --from=base /app/apps/api/drizzle.config.ts apps/api/drizzle.config.ts
+COPY --from=base /app/apps/api/package.json apps/api/package.json
+
+EXPOSE 6701
+
+CMD ["sh", "-c", "cd apps/api && bunx drizzle-kit migrate && bun run start"]

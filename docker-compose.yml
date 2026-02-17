@@ -1,0 +1,73 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: sorgelotse
+      POSTGRES_USER: sorgelotse
+      POSTGRES_PASSWORD: sorgelotse
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - "6701:6701"
+    environment:
+      DATABASE_URL: postgres://sorgelotse:sorgelotse@db:5432/sorgelotse
+    depends_on:
+      - db
+
+  admin:
+    build:
+      context: .
+      dockerfile: Dockerfile.astro
+      args:
+        APP: admin
+        PORT: "4321"
+    ports:
+      - "4321:4321"
+    environment:
+      API_URL: http://api:6701
+      HOST: "0.0.0.0"
+      PORT: "4321"
+    depends_on:
+      - api
+
+  care-provider:
+    build:
+      context: .
+      dockerfile: Dockerfile.astro
+      args:
+        APP: care-provider
+        PORT: "4322"
+    ports:
+      - "4322:4322"
+    environment:
+      API_URL: http://api:6701
+      HOST: "0.0.0.0"
+      PORT: "4322"
+    depends_on:
+      - api
+
+  care-recipient:
+    build:
+      context: .
+      dockerfile: Dockerfile.astro
+      args:
+        APP: care-recipient
+        PORT: "4323"
+    ports:
+      - "4323:4323"
+    environment:
+      API_URL: http://api:6701
+      HOST: "0.0.0.0"
+      PORT: "4323"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
