@@ -30,48 +30,33 @@ services:
   admin:
     build:
       context: .
-      dockerfile: Dockerfile.astro
-      args:
-        APP: admin
-        PORT: "4321"
+      dockerfile: apps/admin/Dockerfile
     ports:
       - "4321:4321"
     environment:
       API_URL: http://api:6701
-      HOST: "0.0.0.0"
-      PORT: "4321"
     depends_on:
       - api
 
   care-provider:
     build:
       context: .
-      dockerfile: Dockerfile.astro
-      args:
-        APP: care-provider
-        PORT: "4322"
+      dockerfile: apps/care-provider/Dockerfile
     ports:
       - "4322:4322"
     environment:
       API_URL: http://api:6701
-      HOST: "0.0.0.0"
-      PORT: "4322"
     depends_on:
       - api
 
   care-recipient:
     build:
       context: .
-      dockerfile: Dockerfile.astro
-      args:
-        APP: care-recipient
-        PORT: "4323"
+      dockerfile: apps/care-recipient/Dockerfile
     ports:
       - "4323:4323"
     environment:
       API_URL: http://api:6701
-      HOST: "0.0.0.0"
-      PORT: "4323"
     depends_on:
       - api
 

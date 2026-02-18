@@ -1,29 +1,22 @@
-FROM oven/bun:1 AS base
-ARG APP
-ARG PORT=4321
+FROM oven/bun:1
 WORKDIR /app
 
-# Install deps
 COPY package.json bun.lock* bunfig.toml ./
-COPY apps/${APP}/package.json apps/${APP}/
+COPY apps/admin/package.json apps/admin/
 COPY apps/api/package.json apps/api/
 COPY packages/shared/package.json packages/shared/
 RUN bun install --frozen-lockfile || bun install
 
-# Copy source
 COPY packages/shared packages/shared
 COPY apps/api/src apps/api/src
 COPY apps/api/tsconfig.json apps/api/tsconfig.json
-COPY apps/${APP} apps/${APP}
+COPY apps/admin apps/admin
 COPY tsconfig.json ./
 
-# Build
-RUN cd apps/${APP} && bun run build
+RUN cd apps/admin && bun run build
 
 ENV HOST=0.0.0.0
-ENV PORT=${PORT}
-ENV APP=${APP}
+ENV PORT=4321
+EXPOSE 4321
 
-EXPOSE ${PORT}
-
-CMD ["sh", "-c", "node apps/${APP}/dist/server/entry.mjs"]
+CMD ["node", "apps/admin/dist/server/entry.mjs"]
