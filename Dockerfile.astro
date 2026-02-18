@@ -20,17 +20,9 @@ COPY tsconfig.json ./
 # Build
 RUN cd apps/${APP} && bun run build
 
-# Runtime
-FROM oven/bun:1-slim
-ARG APP
-ARG PORT=4321
-WORKDIR /app
-
-COPY --from=base /app/apps/${APP}/dist apps/${APP}/dist
-COPY --from=base /app/node_modules node_modules
-
 ENV HOST=0.0.0.0
 ENV PORT=${PORT}
+ENV APP=${APP}
 
 EXPOSE ${PORT}
 
